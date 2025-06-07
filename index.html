@@ -233,9 +233,7 @@
                 <div class="reveal">
                     <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-6">Ubicación <span class="text-gradient">estratégica.</span><br>Conectado con todo.</h2>
                     <p class="text-lg text-gray-600 mb-6">En el corazón de Ingeniero Maschwitz, `mauiMeet` te ofrece acceso inmediato a rutas arteriales, transporte público y los principales puntos de interés de la zona norte. Viví en un entorno natural sin renunciar a la conexión con la ciudad.</p>
-                     <!-- INICIO DE AJUSTE: Coordenadas de Google Maps -->
                      <a href="https://www.google.com/maps/search/?api=1&query=-34.3799152,-58.750601" target="_blank" class="inline-block bg-teal-600 text-white px-6 py-3 rounded-full hover:bg-teal-700 transition-colors">Ver en Google Maps</a>
-                     <!-- FIN DE AJUSTE -->
                 </div>
                 <div class="reveal">
                     <img src="images/Satelital_Barrio.jpeg" alt="Mapa de ubicación de mauiMeet en Maschwitz" class="rounded-lg shadow-xl w-full h-auto">
@@ -250,12 +248,15 @@
             <div class="max-w-2xl mx-auto reveal">
                 <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">¿Querés ser parte de maui<span class="text-gradient">Meet</span>?</h2>
                 <p class="text-lg text-gray-600 mb-8">Dejanos tus datos y sé el primero en recibir todas las novedades, planos y listas de precios. ¡Tu nuevo espacio te está esperando!</p>
-                <form class="space-y-4">
-                    <input type="text" placeholder="Nombre y Apellido" class="w-full p-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500">
-                    <input type="email" placeholder="Correo Electrónico" class="w-full p-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500">
-                    <input type="tel" placeholder="Teléfono (Opcional)" class="w-full p-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500">
-                    <button type="submit" class="w-full bg-teal-600 text-white font-bold p-4 rounded-lg hover:bg-teal-700 transition-colors text-lg">Quiero más información</button>
+                <!-- INICIO DE AJUSTE: Formulario de contacto funcional -->
+                <form id="contact-form" action="https://formspree.io/f/xwpbvnzb" method="POST" class="space-y-4">
+                    <input type="text" name="nombre" placeholder="Nombre y Apellido" class="w-full p-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500" required>
+                    <input type="email" name="email" placeholder="Correo Electrónico" class="w-full p-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500" required>
+                    <input type="tel" name="telefono" placeholder="Teléfono (Opcional)" class="w-full p-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500">
+                    <button id="submit-button" type="submit" class="w-full bg-teal-600 text-white font-bold p-4 rounded-lg hover:bg-teal-700 transition-colors text-lg">Quiero más información</button>
                 </form>
+                <p id="form-status" class="mt-4 text-lg"></p>
+                <!-- FIN DE AJUSTE -->
             </div>
         </div>
     </section>
@@ -303,13 +304,6 @@
         // Swiper initializations
         new Swiper('.interior-slider', {
             loop: true,
-            // INICIO DE AJUSTE: Se elimina el autoplay para que no se mueva solo.
-            /*
-            autoplay: {
-                delay: 3000,
-            },
-            */
-            // FIN DE AJUSTE
             pagination: {
                 el: '.swiper-pagination',
                 clickable: true,
@@ -355,6 +349,57 @@
         revealElements.forEach(el => {
             observer.observe(el);
         });
+
+        // INICIO DE AJUSTE: Lógica del formulario de contacto
+        const form = document.getElementById('contact-form');
+        const formStatus = document.getElementById('form-status');
+        const submitButton = document.getElementById('submit-button');
+
+        async function handleSubmit(event) {
+            event.preventDefault();
+            const data = new FormData(event.target);
+            
+            // Reemplazar la URL con la tuya de Formspree
+            if (event.target.action.includes('TU_URL_DE_FORMSPREE_AQUI')) {
+                formStatus.textContent = 'Por favor, configura la URL de Formspree en el código.';
+                formStatus.className = 'mt-4 text-lg text-red-600';
+                return;
+            }
+
+            submitButton.disabled = true;
+            submitButton.textContent = 'Enviando...';
+
+            fetch(event.target.action, {
+                method: form.method,
+                body: data,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    formStatus.textContent = "¡Gracias! Tu mensaje ha sido enviado.";
+                    formStatus.className = 'mt-4 text-lg text-green-600';
+                    form.reset();
+                } else {
+                    response.json().then(data => {
+                        if (Object.hasOwn(data, 'errors')) {
+                            formStatus.textContent = data["errors"].map(error => error["message"]).join(", ")
+                        } else {
+                            formStatus.textContent = "Oops! Hubo un problema al enviar tu formulario."
+                            formStatus.className = 'mt-4 text-lg text-red-600';
+                        }
+                    })
+                }
+            }).catch(error => {
+                formStatus.textContent = "Oops! Hubo un problema al enviar tu formulario."
+                formStatus.className = 'mt-4 text-lg text-red-600';
+            }).finally(() => {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Quiero más información';
+            });
+        }
+        form.addEventListener("submit", handleSubmit)
+        // FIN DE AJUSTE
     </script>
 </body>
 </html>
