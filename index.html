@@ -4,6 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>mauiMeet - Estudios Contemporáneos en Maschwitz</title>
+    
+    <!-- INICIO DE AJUSTES: Favicon y Etiquetas para Redes Sociales -->
+    <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.mauimeet.com/">
+    <meta property="og:title" content="mauiMeet - Estudios Contemporáneos en Maschwitz">
+    <meta property="og:description" content="Tu lugar para crear, conectar y vivir. Descubrí un nuevo concepto en diseño, flexibilidad y comunidad.">
+    <meta property="og:image" content="https://www.mauimeet.com/images/mauimeet-preview.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.mauimeet.com/">
+    <meta property="twitter:title" content="mauiMeet - Estudios Contemporáneos en Maschwitz">
+    <meta property="twitter:description" content="Tu lugar para crear, conectar y vivir. Descubrí un nuevo concepto en diseño, flexibilidad y comunidad.">
+    <meta property="twitter:image" content="https://www.mauimeet.com/images/mauimeet-preview.png">
+    <!-- FIN DE AJUSTES -->
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -214,7 +233,9 @@
                 <div class="reveal">
                     <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-6">Ubicación <span class="text-gradient">estratégica.</span><br>Conectado con todo.</h2>
                     <p class="text-lg text-gray-600 mb-6">En el corazón de Ingeniero Maschwitz, `mauiMeet` te ofrece acceso inmediato a rutas arteriales, transporte público y los principales puntos de interés de la zona norte. Viví en un entorno natural sin renunciar a la conexión con la ciudad.</p>
-                     <a href="https://www.google.com/maps/place/Ingeniero+Maschwitz,+Provincia+de+Buenos+Aires" target="_blank" class="inline-block bg-teal-600 text-white px-6 py-3 rounded-full hover:bg-teal-700 transition-colors">Ver en Google Maps</a>
+                     <!-- INICIO DE AJUSTE: Coordenadas de Google Maps -->
+                     <a href="https://www.google.com/maps/search/?api=1&query=-34.3799152,-58.750601" target="_blank" class="inline-block bg-teal-600 text-white px-6 py-3 rounded-full hover:bg-teal-700 transition-colors">Ver en Google Maps</a>
+                     <!-- FIN DE AJUSTE -->
                 </div>
                 <div class="reveal">
                     <img src="images/Satelital_Barrio.jpeg" alt="Mapa de ubicación de mauiMeet en Maschwitz" class="rounded-lg shadow-xl w-full h-auto">
@@ -282,9 +303,13 @@
         // Swiper initializations
         new Swiper('.interior-slider', {
             loop: true,
+            // INICIO DE AJUSTE: Se elimina el autoplay para que no se mueva solo.
+            /*
             autoplay: {
                 delay: 3000,
             },
+            */
+            // FIN DE AJUSTE
             pagination: {
                 el: '.swiper-pagination',
                 clickable: true,
@@ -295,6 +320,10 @@
             loop: true,
             slidesPerView: 1,
             spaceBetween: 20,
+            autoplay: {
+                delay: 2500,
+                disableOnInteraction: false,
+            },
             navigation: {
                 nextEl: '.swiper-button-next',
                 prevEl: '.swiper-button-prev',
